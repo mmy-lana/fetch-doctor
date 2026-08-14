@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
     >();
 
     client.on('Network.requestWillBeSent', (params) => {
+      if (params.request.url.startsWith('data:')) return;
       rawRequests.set(params.requestId, {
         url: params.request.url,
         method: params.request.method,
@@ -146,17 +147,24 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      if (req.errorText && req.errorText.includes('net::ERR_ABORTED')) {
-        zombieCount++;
+      if (req.errorText) {
+        const isAborted = req.errorText.includes('ERR_ABORTED');
+        if (isAborted) {
+          zombieCount++;
+        } else {
+          httpErrCount++;
+        }
         issues.push({
           id: generateRequestId(),
-          type: 'ZOMBIE_FETCH',
-          severity: 'critical',
-          message: `Aborted network request detected: ${req.url}`,
+          type: isAborted ? 'ZOMBIE_FETCH' : 'CORS_OR_NETWORK_ERROR',
+          severity: isAborted ? 'critical' : 'error',
+          message: `${isAborted ? 'Aborted network request' : 'Network failure (' + req.errorText + ')'}: ${req.url}`,
           url: req.url,
           method: req.method,
           timestamp: Date.now(),
-          recommendation: 'Attach AbortController signals to component lifecycle hooks to avoid memory leaks.',
+          recommendation: isAborted
+            ? 'Attach AbortController signals to component lifecycle hooks to avoid memory leaks.'
+            : 'Check server status, CORS policies, and network connectivity.',
         });
       }
 

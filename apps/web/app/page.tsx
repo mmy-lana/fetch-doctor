@@ -11,7 +11,11 @@ export default function Home() {
 
   const handleScan = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url) return;
+    const trimmedUrl = url.trim();
+    if (!trimmedUrl) {
+      setError('Please enter a valid target URL (e.g. https://example.com)');
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -48,11 +52,12 @@ export default function Home() {
 
         <form onSubmit={handleScan} className="flex flex-col sm:flex-row gap-3">
           <input
-            type="text"
-            placeholder="Enter URL (e.g. https://example.com)"
+            type="url"
+            required
+            placeholder="https://example.com"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="flex-1 px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 text-sm"
+            className="flex-1 px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 text-sm placeholder:text-slate-600"
           />
           <button
             type="submit"
