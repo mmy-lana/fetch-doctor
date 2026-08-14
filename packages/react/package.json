@@ -1,0 +1,23 @@
+{
+  "name": "@fetch-doctor/react",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@fetch-doctor/shared": "workspace:*",
+    "fetch-doctor": "workspace:*",
+    "react": "19.0.0-rc.1",
+    "react-dom": "19.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "fetch-doctor-monorepo",
+  "private": true,
+  "packageManager": "pnpm@11.21.0",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "turbo clean",
+    "changeset": "changeset"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.0",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "turbo": "^2.10.9",
+    "typescript": "^6.0.3"
+  }
+}

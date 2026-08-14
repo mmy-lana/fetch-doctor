@@ -1,0 +1,9 @@
+node_modules
+.next
+dist
+.turbo
+.DS_Store
+*.log
+.env
+.env.local
+repomix-output.xml
