@@ -1,9 +1,19 @@
 {
   "name": "@fetch-doctor/react",
   "version": "0.0.1",
+  "description": "React 19 lifecycle hooks & diagnostic observers for fetch-doctor.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "homepage": "https://fetch-doctor.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmy-lana/fetch-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mmy-lana/fetch-doctor/issues"
+  },
+  "keywords": ["fetch-doctor", "react-19", "useTrackFetch", "zombie-fetch", "abortcontroller"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

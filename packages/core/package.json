@@ -1,9 +1,19 @@
 {
   "name": "@fetch-doctor/core",
   "version": "0.0.1",
+  "description": "Core fetch interceptor engine & floating Shadow DOM diagnostic overlay for zombie fetches.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "homepage": "https://fetch-doctor.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmy-lana/fetch-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mmy-lana/fetch-doctor/issues"
+  },
+  "keywords": ["fetch-doctor", "zombie-fetch", "abortcontroller", "react-19", "devtools", "network-audit"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
