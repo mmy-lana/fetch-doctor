@@ -8,7 +8,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "ignoreDeprecations": "6.0",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@fetch-doctor/core": ["../core/src/index.ts"],
+      "@fetch-doctor/shared": ["../shared/src/index.ts"]
+    }
   },
   "include": ["src/**/*"]
 }

@@ -11,7 +11,7 @@
   "dependencies": {
     "@fetch-doctor/react": "workspace:*",
     "@fetch-doctor/shared": "workspace:*",
-    "fetch-doctor": "workspace:*",
+    "@fetch-doctor/core": "workspace:*",
     "react": "19.0.0-rc.1",
     "react-dom": "19.0.0-rc.1"
   },

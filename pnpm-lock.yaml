@@ -26,15 +26,15 @@ importers:
 
   apps/playground:
     dependencies:
+      '@fetch-doctor/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@fetch-doctor/react':
         specifier: workspace:*
         version: link:../../packages/react
       '@fetch-doctor/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      fetch-doctor:
-        specifier: workspace:*
-        version: link:../../packages/core
       react:
         specifier: 19.0.0-rc.1
         version: 19.0.0-rc.1
@@ -116,12 +116,12 @@ importers:
 
   packages/react:
     dependencies:
+      '@fetch-doctor/core':
+        specifier: workspace:*
+        version: link:../core
       '@fetch-doctor/shared':
         specifier: workspace:*
         version: link:../shared
-      fetch-doctor:
-        specifier: workspace:*
-        version: link:../core
       react:
         specifier: 19.0.0-rc.1
         version: 19.0.0-rc.1

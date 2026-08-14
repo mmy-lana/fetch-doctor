@@ -4,7 +4,7 @@ import {
   subscribeDiagnostics,
   getDiagnostics,
   getNetworkLogs,
-} from 'fetch-doctor';
+} from '@fetch-doctor/core';
 import {
   FetchDoctorConfig,
   DiagnosticSummary,
