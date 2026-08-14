@@ -329,6 +329,8 @@ class FetchDoctorEngine {
     }
   }
 
+  private isCollapsed = false;
+
   private renderOverlayContent(): void {
     if (!this.shadowRoot) return;
 
@@ -356,7 +358,7 @@ class FetchDoctorEngine {
           border: 1px solid #30363d;
           border-radius: 8px;
           box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-          width: 320px;
+          width: ${this.isCollapsed ? 'auto' : '320px'};
           max-height: 420px;
           display: flex;
           flex-direction: column;
@@ -369,9 +371,26 @@ class FetchDoctorEngine {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 1px solid #30363d;
+          border-bottom: ${this.isCollapsed ? 'none' : '1px solid #30363d'};
           font-weight: 600;
+          gap: 8px;
+          user-select: none;
         }
+        .controls {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .btn-action {
+          background: #21262d;
+          border: 1px solid #30363d;
+          color: #c9d1d9;
+          border-radius: 4px;
+          padding: 1px 6px;
+          font-size: 10px;
+          cursor: pointer;
+        }
+        .btn-action:hover { background: #30363d; }
         .score {
           padding: 2px 8px;
           border-radius: 12px;
@@ -383,6 +402,7 @@ class FetchDoctorEngine {
           padding: 8px;
           overflow-y: auto;
           max-height: 340px;
+          display: ${this.isCollapsed ? 'none' : 'block'};
         }
         .metric-row {
           display: flex;
@@ -405,9 +425,13 @@ class FetchDoctorEngine {
         .badge-warn { color: #d29922; }
       </style>
       <div class="container">
-        <div class="header">
+        <div class="header" id="toggle-header">
           <span>🩺 Fetch Doctor</span>
-          <span class="score">Score: ${summary.score}</span>
+          <div class="controls">
+            <span class="score">Score: ${summary.score}</span>
+            <button class="btn-action" id="btn-clear" title="Clear Logs">Clear</button>
+            <button class="btn-action" id="btn-toggle" title="Toggle Overlay">${this.isCollapsed ? '▲' : '▼'}</button>
+          </div>
         </div>
         <div class="content">
           <div class="metric-row">
@@ -443,6 +467,23 @@ class FetchDoctorEngine {
     `;
 
     this.shadowRoot.innerHTML = html;
+
+    const btnToggle = this.shadowRoot.getElementById('btn-toggle');
+    if (btnToggle) {
+      btnToggle.onclick = (e) => {
+        e.stopPropagation();
+        this.isCollapsed = !this.isCollapsed;
+        this.renderOverlayContent();
+      };
+    }
+
+    const btnClear = this.shadowRoot.getElementById('btn-clear');
+    if (btnClear) {
+      btnClear.onclick = (e) => {
+        e.stopPropagation();
+        this.clear();
+      };
+    }
   }
 }
 

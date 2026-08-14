@@ -41,13 +41,33 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 p-6 md:p-12 font-sans">
       <div className="max-w-5xl mx-auto space-y-8">
-        <header className="border-b border-slate-800 pb-6">
-          <h1 className="text-3xl font-extrabold text-cyan-400 flex items-center gap-2">
-            🩺 Fetch Doctor Web Scanner
-          </h1>
-          <p className="text-slate-400 mt-2 text-sm">
-            Headless CDP network auditor for zombie fetch detection, missing AbortSignals, and latency profiling.
-          </p>
+        <header className="border-b border-slate-800 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-extrabold text-cyan-400 flex items-center gap-2">
+              🩺 Fetch Doctor Web Scanner
+            </h1>
+            <p className="text-slate-400 mt-2 text-sm">
+              Headless CDP network auditor for zombie fetch detection, missing AbortSignals, and latency profiling.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 text-xs">
+            <a
+              href="https://github.com/mmy-lana/fetch-doctor"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-slate-900 border border-slate-700 hover:border-cyan-500 text-slate-300 hover:text-cyan-400 rounded-md transition"
+            >
+              🐙 GitHub Repo
+            </a>
+            <a
+              href="https://fetch-doctor-playground.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-slate-900 border border-slate-700 hover:border-cyan-500 text-slate-300 hover:text-cyan-400 rounded-md transition"
+            >
+              🧪 Playground
+            </a>
+          </div>
         </header>
 
         <form onSubmit={handleScan} className="flex flex-col sm:flex-row gap-3">
@@ -122,6 +142,17 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        <footer className="pt-8 border-t border-slate-900 text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-2">
+          <div>
+            Created by <a href="https://github.com/mmy-lana" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">@mmy-lana</a>
+          </div>
+          <div className="flex gap-4">
+            <a href="https://www.npmjs.com/package/@fetch-doctor/core" target="_blank" rel="noopener noreferrer" className="hover:text-slate-300">@fetch-doctor/core</a>
+            <a href="https://www.npmjs.com/package/@fetch-doctor/react" target="_blank" rel="noopener noreferrer" className="hover:text-slate-300">@fetch-doctor/react</a>
+            <a href="https://www.npmjs.com/package/@fetch-doctor/shared" target="_blank" rel="noopener noreferrer" className="hover:text-slate-300">@fetch-doctor/shared</a>
+          </div>
+        </footer>
       </div>
     </main>
   );

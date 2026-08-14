@@ -12,9 +12,14 @@ import {
 } from '@fetch-doctor/shared';
 
 export function useFetchDoctor(config?: FetchDoctorConfig): void {
+  const serializedConfig = config ? JSON.stringify(config) : '';
+  
   useEffect(() => {
-    initFetchDoctor(config);
-  }, [config]);
+    const parsedConfig: FetchDoctorConfig | undefined = serializedConfig
+      ? JSON.parse(serializedConfig)
+      : undefined;
+    initFetchDoctor(parsedConfig);
+  }, [serializedConfig]);
 }
 
 export function useFetchDoctorDiagnostics(): {
@@ -68,11 +73,15 @@ export function useTrackFetch() {
 
       let signal = controller.signal;
       if (init?.signal) {
-        const customSignal = init.signal;
-        if (customSignal.aborted) {
-          controller.abort();
+        if (typeof AbortSignal.any === 'function') {
+          signal = AbortSignal.any([controller.signal, init.signal]);
         } else {
-          customSignal.addEventListener('abort', () => controller.abort(), { once: true });
+          const customSignal = init.signal;
+          if (customSignal.aborted) {
+            controller.abort();
+          } else {
+            customSignal.addEventListener('abort', () => controller.abort(), { once: true });
+          }
         }
       }
 
