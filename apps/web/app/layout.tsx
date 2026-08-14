@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     'mmy-lana',
   ],
   authors: [{ name: 'Muhammad Maulana Yusuf', url: 'https://github.com/mmy-lana' }],
+  verification: {
+    google: 'kHFv2qyOjv4Th7trKaPXsJom5ZKq5zYf_pZpdXYvA58',
+  },
   openGraph: {
     title: 'fetch-doctor — Network Lifecycle & Zombie Fetch Auditor',
     description: 'Diagnose zombie fetches, unhandled AbortControllers, and race conditions in real time.',
