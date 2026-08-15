@@ -120,6 +120,7 @@ export async function POST(request: NextRequest) {
 
       if (duration > 2000) {
         slowCount++;
+        const isDocument = req.url === formattedUrl || req.url === `${formattedUrl}/`;
         issues.push({
           id: generateRequestId(),
           type: 'SLOW_RESPONSE',
@@ -129,7 +130,9 @@ export async function POST(request: NextRequest) {
           method: req.method,
           timestamp: Date.now(),
           duration,
-          recommendation: 'Optimize backend query execution or utilize CDN edge caching.',
+          recommendation: isDocument
+            ? 'High TTFB detected on initial HTML document. Optimize DNS lookup, SSL negotiation, static hosting provider latency, or CDN edge distribution.'
+            : 'Optimize asset compression, backend query execution, or utilize CDN edge caching.',
         });
       }
 
