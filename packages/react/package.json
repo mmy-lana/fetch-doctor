@@ -1,6 +1,6 @@
 {
   "name": "@fetch-doctor/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React 19 lifecycle hooks & diagnostic observers for fetch-doctor.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
