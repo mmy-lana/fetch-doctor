@@ -1,6 +1,6 @@
 {
   "name": "@fetch-doctor/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Core fetch interceptor engine & floating Shadow DOM diagnostic overlay for zombie fetches.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
