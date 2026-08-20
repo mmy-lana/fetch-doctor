@@ -13,7 +13,17 @@
   "bugs": {
     "url": "https://github.com/mmy-lana/fetch-doctor/issues"
   },
-  "keywords": ["fetch-doctor", "zombie-fetch", "abortcontroller", "react-19", "devtools", "network-audit"],
+  "keywords": [
+    "fetch-doctor",
+    "zombie-fetch",
+    "http-profiler",
+    "abortcontroller",
+    "abortsignal",
+    "network-audit",
+    "devtools",
+    "performance-monitoring",
+    "react-19"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
