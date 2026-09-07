@@ -1,4 +1,4 @@
-# 🩺 fetch-doctor
+# fetch-doctor
 
 > **Zero-dependency, SOLID-compliant HTTP request profiler, zombie fetch detector, and runtime network diagnostic suite for modern web applications.**
 
@@ -9,35 +9,35 @@
 
 ---
 
-## 🔗 Live Demos & Official Packages
+## Live Demos & Official Packages
 
-- 🌐 **Web Scanner App**: [fetch-doctor.vercel.app](https://fetch-doctor.vercel.app/)
-- 🧪 **Interactive Playground**: [fetch-doctor-playground.vercel.app](https://fetch-doctor-playground.vercel.app)
-- 🐙 **GitHub Repository**: [github.com/mmy-lana/fetch-doctor](https://github.com/mmy-lana/fetch-doctor)
+- **Web Scanner App**: [fetch-doctor.vercel.app](https://fetch-doctor.vercel.app/)
+- **Interactive Playground**: [fetch-doctor-playground.vercel.app](https://fetch-doctor-playground.vercel.app)
+- **GitHub Repository**: [github.com/mmy-lana/fetch-doctor](https://github.com/mmy-lana/fetch-doctor)
 
 ### Official npm Packages
 
-- 📦 [`@fetch-doctor/core`](https://www.npmjs.com/package/@fetch-doctor/core) — Core Interceptor Engine & Floating Overlay
-- ⚛️ [`@fetch-doctor/react`](https://www.npmjs.com/package/@fetch-doctor/react) — React 19 Lifecycle Hooks & Diagnostic Observers
-- 🛠️ [`@fetch-doctor/shared`](https://www.npmjs.com/package/@fetch-doctor/shared) — Shared Types, Formatters & CDP Audit Utilities
+- [`@fetch-doctor/core`](https://www.npmjs.com/package/@fetch-doctor/core) — Core Interceptor Engine & Floating Overlay
+- [`@fetch-doctor/react`](https://www.npmjs.com/package/@fetch-doctor/react) — React 19 Lifecycle Hooks & Diagnostic Observers
+- [`@fetch-doctor/shared`](https://www.npmjs.com/package/@fetch-doctor/shared) — Shared Types, Formatters & CDP Audit Utilities
 
 ---
 
-## 💡 What is Fetch Doctor?
+## What is Fetch Doctor?
 
-### 🗣️ Simple Explanation (For Non-IT Users)
+### Simple Explanation (For Non-IT Users)
 Imagine your web browser is like a restaurant kitchen, and internet requests are waiters taking orders. 
 
 When you leave a page or close a pop-up, a **"Zombie Fetch"** happens when a waiter keeps bringing food to a table that no longer exists—wasting memory, slowing down your device, and causing invisible glitches.
 
 **Fetch Doctor** acts as an automated health inspector inside your web app that catches these wasted requests, alerts developers in real-time, and provides a health score to keep websites fast and responsive.
 
-### 💻 Technical Explanation (For Developers & Infrastructure Engineers)
+### Technical Explanation (For Developers & Infrastructure Engineers)
 **Fetch Doctor** is a lightweight monorepo suite that intercepts the global `window.fetch` API without external runtime dependencies. It inspects outgoing requests for missing `AbortSignal` controllers, tracks active HTTP requests against component lifecycle unmounts, detects network latency bottlenecks (>2000ms), flags 4xx/5xx HTTP errors, and renders a Shadow-DOM floating debug overlay in development.
 
 ---
 
-## ⚡ Key Problems Solved
+## Key Problems Solved
 
 1. **Zombie Fetches**: Detects HTTP requests that continue processing or resolving after an `AbortSignal` has been triggered or after a caller component unmounted.
 2. **Missing `AbortSignal` Hygiene**: Flags network requests initiated without cancellation signals, preventing memory leaks on slow networks.
@@ -46,7 +46,7 @@ When you leave a page or close a pop-up, a **"Zombie Fetch"** happens when a wai
 
 ---
 
-## 🏗️ Monorepo Architecture
+## Monorepo Architecture
 
 ```text
 fetch-doctor-monorepo/
@@ -61,7 +61,7 @@ fetch-doctor-monorepo/
 
 ---
 
-## 🚀 Step-by-Step Integration Guide
+## Step-by-Step Integration Guide
 
 ### Option 1: React 19 / Modern React Integration
 
@@ -135,7 +135,7 @@ subscribeDiagnostics((logs, summary) => {
 
 ---
 
-## 🛠️ Local Monorepo Setup
+## Local Monorepo Setup
 
 To clone and run the entire monorepo suite locally:
 
@@ -159,7 +159,7 @@ pnpm dev
 
 ---
 
-## 🔮 Roadmap & Next Big Things
+## Roadmap & Next Big Things
 
 - [ ] **Automated CI GitHub Action**: Run headless URL network health checks in GitHub Pull Requests.
 - [ ] **Axios & GraphQL Interceptors**: Native adapters for Axios, TanStack Query, and Apollo Client.
@@ -168,6 +168,6 @@ pnpm dev
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
