@@ -244,12 +244,15 @@ class FetchDoctorEngine {
         issues,
       };
 
+      self.addLog(logEntry);
+
       try {
         const response = await nativeFetch.apply(this, [input, init]);
         const endTime = performance.now();
         const duration = endTime - startTime;
 
         self.activeRequests.delete(id);
+        self.requestScopes.delete(id);
 
         logEntry.endTime = endTime;
         logEntry.duration = duration;
@@ -309,12 +312,14 @@ class FetchDoctorEngine {
           self.config.onIssueDetected?.(issue);
         }
 
-        self.addLog(logEntry);
+        self.notifyListeners();
+        self.renderOverlayContent();
         return response;
       } catch (error) {
         const endTime = performance.now();
         const duration = endTime - startTime;
         self.activeRequests.delete(id);
+        self.requestScopes.delete(id);
 
         logEntry.endTime = endTime;
         logEntry.duration = duration;
@@ -336,7 +341,8 @@ class FetchDoctorEngine {
           self.config.onIssueDetected?.(issue);
         }
 
-        self.addLog(logEntry);
+        self.notifyListeners();
+        self.renderOverlayContent();
         throw error;
       }
     };
