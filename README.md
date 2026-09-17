@@ -1,11 +1,27 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="fetch-doctor banner" width="100%" />
+</p>
+
 # fetch-doctor
 
-> **Zero-dependency, SOLID-compliant HTTP request profiler, zombie fetch detector, and runtime network diagnostic suite for modern web applications.**
+> **Catch zombie fetches, unhandled network leaks, and missing AbortControllers in React 19 and modern web applications.**
 
 [![npm core](https://img.shields.io/npm/v/@fetch-doctor/core?color=cyan&label=%40fetch-doctor%2Fcore)](https://www.npmjs.com/package/@fetch-doctor/core)
 [![npm react](https://img.shields.io/npm/v/@fetch-doctor/react?color=blue&label=%40fetch-doctor%2Freact)](https://www.npmjs.com/package/@fetch-doctor/react)
 [![npm shared](https://img.shields.io/npm/v/@fetch-doctor/shared?color=green&label=%40fetch-doctor%2Fshared)](https://www.npmjs.com/package/@fetch-doctor/shared)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+---
+
+## Feature Comparison Matrix
+
+| Feature | Native Fetch API | Axios | @fetch-doctor |
+| :--- | :--- | :--- | :--- |
+| Automatic Unmount Cancellation | Manual AbortController | Manual cancel token | Automatic via `useTrackFetch` |
+| Zombie Request Detection | None | None | Built-in via interceptor & CDP |
+| Missing AbortSignal Hygiene | None | None | Runtime enforcement & diagnostics |
+| Real-time Diagnostic Overlay | None | None | Shadow DOM HUD (Dev mode only) |
+| Headless Network Auditing | None | None | Built-in Puppeteer CDP scanner |
 
 ---
 
@@ -123,7 +139,7 @@ initFetchDoctor({
     requireAbortSignal: true,
   },
   onIssueDetected: (issue) => {
-    console.warn(`🩺 Issue detected [${issue.type}]:`, issue.message);
+    console.warn(`[fetch-doctor] Issue detected [${issue.type}]:`, issue.message);
   },
 });
 

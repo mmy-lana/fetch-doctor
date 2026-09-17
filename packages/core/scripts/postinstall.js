@@ -13,7 +13,7 @@ try {
   const reset = '\x1b[0m';
   const green = '\x1b[32m';
 
-  console.log(`\n${cyan}${bold}🩺 [fetch-doctor]: Installed!${reset}`);
+  console.log(`\n${cyan}${bold}[fetch-doctor]: Installed!${reset}`);
   console.log(`${green}Optimized for Browser/Frontend HTTP network profiling & zombie fetch detection.${reset}\n`);
 } catch {
   // Non-blocking exit on environment error

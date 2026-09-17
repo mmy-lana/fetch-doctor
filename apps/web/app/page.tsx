@@ -1,13 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PuppeteerAuditResult, formatBytes, formatDuration } from '@fetch-doctor/shared';
+
+const SCAN_STEPS = [
+  'Initializing headless browser session...',
+  'Connecting Chrome DevTools Protocol (CDP)...',
+  'Navigating to target and recording traffic...',
+  'Analyzing zombie fetches and network leaks...',
+];
 
 export default function Home() {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [scanStepIndex, setScanStepIndex] = useState(0);
   const [result, setResult] = useState<PuppeteerAuditResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!loading) {
+      setScanStepIndex(0);
+      return;
+    }
+    const interval = setInterval(() => {
+      setScanStepIndex((prev) => (prev < SCAN_STEPS.length - 1 ? prev + 1 : prev));
+    }, 2800);
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const handleScan = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +63,7 @@ export default function Home() {
         <header className="border-b border-slate-800 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-extrabold text-cyan-400 flex items-center gap-2">
-              🩺 Fetch Doctor Web Scanner
+              Fetch Doctor Web Scanner
             </h1>
             <p className="text-slate-400 mt-2 text-sm">
               Headless CDP network auditor for zombie fetch detection, missing AbortSignals, and latency profiling.
@@ -57,7 +76,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="px-3 py-1.5 bg-slate-900 border border-slate-700 hover:border-cyan-500 text-slate-300 hover:text-cyan-400 rounded-md transition"
             >
-              🐙 GitHub Repo
+              GitHub Repo
             </a>
             <a
               href="https://fetch-doctor-playground.vercel.app"
@@ -65,7 +84,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="px-3 py-1.5 bg-slate-900 border border-slate-700 hover:border-cyan-500 text-slate-300 hover:text-cyan-400 rounded-md transition"
             >
-              🧪 Playground
+              Playground
             </a>
           </div>
         </header>
@@ -74,6 +93,7 @@ export default function Home() {
           <input
             type="url"
             required
+            autoComplete="off"
             placeholder="https://example.com"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -88,9 +108,16 @@ export default function Home() {
           </button>
         </form>
 
+        {loading && (
+          <div className="p-4 bg-slate-900 border border-slate-800 rounded-lg flex items-center gap-3 text-sm text-cyan-400">
+            <div className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin shrink-0" />
+            <span>{SCAN_STEPS[scanStepIndex]}</span>
+          </div>
+        )}
+
         {error && (
           <div className="p-4 bg-red-950/50 border border-red-800 rounded-lg text-red-300 text-sm">
-            ⚠️ {error}
+            [ERROR] {error}
           </div>
         )}
 
@@ -133,7 +160,7 @@ export default function Home() {
                     </div>
                     {log.issues.map((issue) => (
                       <div key={issue.id} className="text-red-400 pt-1 font-sans">
-                        ⚠️ {issue.message} — <span className="text-slate-400">{issue.recommendation}</span>
+                        [!] {issue.message} — <span className="text-slate-400">{issue.recommendation}</span>
                       </div>
                     ))}
                   </div>

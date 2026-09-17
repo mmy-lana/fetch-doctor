@@ -33,7 +33,7 @@ class FetchDoctorEngine {
 
   public init(config: FetchDoctorConfig = {}): void {
     if (typeof window === 'undefined') {
-      console.warn('🩺 [fetch-doctor]: SSR environment detected. Interceptors disabled.');
+      console.warn('[fetch-doctor]: SSR environment detected. Interceptors disabled.');
       return;
     }
 
@@ -426,11 +426,11 @@ class FetchDoctorEngine {
       </style>
       <div class="container">
         <div class="header" id="toggle-header">
-          <span>🩺 Fetch Doctor</span>
+          <span>Fetch Doctor</span>
           <div class="controls">
             <span class="score">Score: ${summary.score}</span>
             <button class="btn-action" id="btn-clear" title="Clear Logs">Clear</button>
-            <button class="btn-action" id="btn-toggle" title="Toggle Overlay">${this.isCollapsed ? '▲' : '▼'}</button>
+            <button class="btn-action" id="btn-toggle" title="Toggle Overlay">${this.isCollapsed ? '+' : '-'}</button>
           </div>
         </div>
         <div class="content">
@@ -456,7 +456,7 @@ class FetchDoctorEngine {
                 <span>${l.bytesReceived ? formatBytes(l.bytesReceived) : ''}</span>
                 <span style="color: ${l.status && l.status < 400 ? '#3fb950' : '#f85149'}">${l.status || 'ERR'}</span>
               </div>
-              ${l.issues.map((i: FetchDiagnosticIssue) => `<div style="color: #f85149; font-size: 10px; margin-top:2px;">⚠️ ${i.message}</div>`).join('')}
+              ${l.issues.map((i: FetchDiagnosticIssue) => `<div style="color: #f85149; font-size: 10px; margin-top:2px;">[!] ${i.message}</div>`).join('')}
             </div>
           `
                   )

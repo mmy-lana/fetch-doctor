@@ -51,7 +51,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100 p-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-6">
         <header>
-          <h1 className="text-2xl font-bold text-cyan-400">🩺 Fetch Doctor Playground</h1>
+          <h1 className="text-2xl font-bold text-cyan-400">Fetch Doctor Playground</h1>
           <p className="text-xs text-slate-400 mt-1">
             Interactive test-bed for simulating zombie fetches, missing signals, and live overlay inspection.
           </p>
@@ -65,19 +65,19 @@ export default function App() {
                 onClick={triggerSlowFetch}
                 className="px-4 py-2 bg-yellow-600/80 hover:bg-yellow-500 text-white rounded text-xs font-medium text-left"
               >
-                🐢 Simulate Slow Fetch (3s delay)
+                Simulate Slow Fetch (3s delay)
               </button>
               <button
                 onClick={triggerErrorFetch}
                 className="px-4 py-2 bg-red-600/80 hover:bg-red-500 text-white rounded text-xs font-medium text-left"
               >
-                💥 Simulate HTTP 500 Error
+                Simulate HTTP 500 Error
               </button>
               <button
                 onClick={() => setShowChild(!showChild)}
                 className="px-4 py-2 bg-cyan-700 hover:bg-cyan-600 text-white rounded text-xs font-medium text-left"
               >
-                {showChild ? '❌ Unmount Child Component (Test Zombie)' : '✅ Remount Child Component'}
+                {showChild ? 'Unmount Child Component (Test Zombie)' : 'Remount Child Component'}
               </button>
             </div>
             {showChild && <ChildFetchComponent />}
