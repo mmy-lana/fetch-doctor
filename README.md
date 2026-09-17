@@ -81,11 +81,12 @@ fetch-doctor-monorepo/
 
 ### Option 1: React 19 / Modern React Integration
 
-#### 1. Install Dependencies
+Install the primary React integration package (bundles and re-exports core utilities and TypeScript types):
+
 ```bash
-pnpm add @fetch-doctor/core @fetch-doctor/react @fetch-doctor/shared
+npm install -D @fetch-doctor/react
 # or
-npm install @fetch-doctor/core @fetch-doctor/react @fetch-doctor/shared
+pnpm add -D @fetch-doctor/react
 ```
 
 #### 2. Initialize in App Root (`App.tsx`)
@@ -126,6 +127,13 @@ function UserProfile() {
 ---
 
 ### Option 2: Vanilla JavaScript / Core Engine
+
+For non-React browser applications, install the core engine package directly:
+
+```bash
+npm install -D @fetch-doctor/core
+# or
+pnpm add -D @fetch-doctor/core
 
 ```typescript
 import { initFetchDoctor, getDiagnostics, subscribeDiagnostics } from '@fetch-doctor/core';

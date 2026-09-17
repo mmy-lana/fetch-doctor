@@ -61,13 +61,21 @@ export default function Home() {
     <main className="min-h-screen bg-slate-950 text-slate-100 p-6 md:p-12 font-sans">
       <div className="max-w-5xl mx-auto space-y-8">
         <header className="border-b border-slate-800 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-extrabold text-cyan-400 flex items-center gap-2">
-              Fetch Doctor Web Scanner
-            </h1>
-            <p className="text-slate-400 mt-2 text-sm">
-              Headless CDP network auditor for zombie fetch detection, missing AbortSignals, and latency profiling.
-            </p>
+          <div className="flex items-center gap-4">
+            <svg className="w-12 h-12 shrink-0" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="200" rx="44" fill="#0F172A" stroke="#00F2FE" strokeWidth="2"/>
+              <path d="M 42 108 L 68 108 L 75 121 L 86 66 L 100 150 L 109 94 L 118 115 L 127 108 L 158 108" stroke="#38BDF8" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M 149 97 L 164 108 L 149 119" stroke="#00F5A0" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="100" cy="150" r="6" fill="#F43F5E"/>
+            </svg>
+            <div>
+              <h1 className="text-3xl font-extrabold text-cyan-400">
+                Fetch Doctor Web Scanner
+              </h1>
+              <p className="text-slate-400 mt-1 text-sm">
+                Headless CDP network auditor for zombie fetch detection, missing AbortSignals, and latency profiling.
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3 text-xs">
             <a

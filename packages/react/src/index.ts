@@ -10,6 +10,7 @@ import {
   DiagnosticSummary,
   NetworkRequestLog,
 } from '@fetch-doctor/shared';
+import { registerFetchScope, unregisterFetchScope } from '@fetch-doctor/core';
 
 export function useFetchDoctor(config?: FetchDoctorConfig): void {
   const serializedConfig = config ? JSON.stringify(config) : '';
@@ -51,20 +52,24 @@ export function useFetchDoctorDiagnostics(): {
   return data;
 }
 
-export function useTrackFetch() {
+export function useTrackFetch(componentName = 'Component') {
   const abortControllersRef = useRef<Set<AbortController>>(new Set());
 
   useEffect(() => {
+    const scopeId = registerFetchScope(componentName);
     const controllers = abortControllersRef.current;
     return () => {
+      const signals = new Set<AbortSignal>();
       controllers.forEach((controller) => {
         if (!controller.signal.aborted) {
           controller.abort('Component unmounted');
+          signals.add(controller.signal);
         }
       });
+      unregisterFetchScope(scopeId, signals);
       controllers.clear();
     };
-  }, []);
+  }, [componentName]);
 
   const trackedFetch = useCallback(
     async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
@@ -99,3 +104,6 @@ export function useTrackFetch() {
 
   return trackedFetch;
 }
+
+export * from '@fetch-doctor/core';
+export * from '@fetch-doctor/shared';

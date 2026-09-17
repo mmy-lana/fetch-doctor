@@ -11,7 +11,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@fetch-doctor/react": ["../../packages/react/src/index.ts"],
+      "@fetch-doctor/core": ["../../packages/core/src/index.ts"],
+      "@fetch-doctor/shared": ["../../packages/shared/src/index.ts"]
+    }
   },
   "include": ["src"]
 }

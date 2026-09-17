@@ -50,11 +50,19 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 p-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-6">
-        <header>
-          <h1 className="text-2xl font-bold text-cyan-400">Fetch Doctor Playground</h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Interactive test-bed for simulating zombie fetches, missing signals, and live overlay inspection.
-          </p>
+        <header className="flex items-center gap-3">
+          <svg className="w-10 h-10 shrink-0" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="200" rx="44" fill="#0F172A" stroke="#00F2FE" strokeWidth="2"/>
+            <path d="M 42 108 L 68 108 L 75 121 L 86 66 L 100 150 L 109 94 L 118 115 L 127 108 L 158 108" stroke="#38BDF8" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M 149 97 L 164 108 L 149 119" stroke="#00F5A0" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="100" cy="150" r="6" fill="#F43F5E"/>
+          </svg>
+          <div>
+            <h1 className="text-2xl font-bold text-cyan-400">Fetch Doctor Playground</h1>
+            <p className="text-xs text-slate-400 mt-1">
+              Interactive test-bed for simulating zombie fetches, missing signals, and live overlay inspection.
+            </p>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

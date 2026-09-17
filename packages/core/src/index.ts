@@ -18,6 +18,8 @@ class FetchDoctorEngine {
   private config: FetchDoctorConfig = {};
   private requestLogs: NetworkRequestLog[] = [];
   private activeRequests = new Map<string, { startTime: number; url: string; method: string }>();
+  private activeScopes = new Map<string, { id: string; name: string }>();
+  private requestScopes = new Map<string, Set<string>>();
   private listeners: Set<DiagnosticListener> = new Set();
   private overlayElement: HTMLElement | null = null;
   private shadowRoot: ShadowRoot | null = null;
@@ -72,6 +74,49 @@ class FetchDoctorEngine {
     }
   }
 
+  public registerScope(name = 'Component'): string {
+    const id = `scope_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    this.activeScopes.set(id, { id, name });
+    return id;
+  }
+
+  public unregisterScope(scopeId: string, cleanlyAbortedSignals?: Set<AbortSignal>): void {
+    const scope = this.activeScopes.get(scopeId);
+    if (!scope) return;
+
+    this.activeRequests.forEach((reqInfo, reqId) => {
+      const scopes = this.requestScopes.get(reqId);
+      if (scopes && scopes.has(scopeId)) {
+        const log = this.requestLogs.find((l) => l.id === reqId);
+        const isCleanlyAborted = cleanlyAbortedSignals && Array.from(cleanlyAbortedSignals).some((s) => s.aborted);
+
+        if (!isCleanlyAborted) {
+          const issue: FetchDiagnosticIssue = {
+            id: `${reqId}_zombie_unmount`,
+            type: 'ZOMBIE_FETCH',
+            severity: 'critical',
+            message: `Zombie Fetch: ${reqInfo.method} ${reqInfo.url} continued in-flight after ${scope.name} unmounted.`,
+            url: reqInfo.url,
+            method: reqInfo.method,
+            timestamp: Date.now(),
+            recommendation: 'Pass an AbortSignal tied to component unmount via useTrackFetch() to prevent dangling promises.',
+          };
+
+          if (log) {
+            if (!log.issues.some((i) => i.type === 'ZOMBIE_FETCH')) {
+              log.issues.push(issue);
+            }
+          }
+          this.config.onIssueDetected?.(issue);
+        }
+      }
+    });
+
+    this.activeScopes.delete(scopeId);
+    this.notifyListeners();
+    this.renderOverlayContent();
+  }
+
   public restore(): void {
     if (typeof window === 'undefined' || !this.isInitialized) return;
     if (this.originalFetch) {
@@ -82,6 +127,8 @@ class FetchDoctorEngine {
     this.isInitialized = false;
     this.requestLogs = [];
     this.activeRequests.clear();
+    this.activeScopes.clear();
+    this.requestScopes.clear();
     this.listeners.clear();
   }
 
@@ -157,6 +204,7 @@ class FetchDoctorEngine {
       const issues: FetchDiagnosticIssue[] = [];
 
       self.activeRequests.set(id, { startTime, url, method });
+      self.requestScopes.set(id, new Set(self.activeScopes.keys()));
 
       if (!signalAttached && self.config.rules?.requireAbortSignal) {
         issues.push({
@@ -426,7 +474,14 @@ class FetchDoctorEngine {
       </style>
       <div class="container">
         <div class="header" id="toggle-header">
-          <span>Fetch Doctor</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <svg width="16" height="16" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="200" rx="44" fill="#0F172A"/>
+              <path d="M 42 108 L 68 108 L 75 121 L 86 66 L 100 150 L 109 94 L 118 115 L 127 108 L 158 108" stroke="#38BDF8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="100" cy="150" r="10" fill="#F43F5E"/>
+            </svg>
+            <span>Fetch Doctor</span>
+          </div>
           <div class="controls">
             <span class="score">Score: ${summary.score}</span>
             <button class="btn-action" id="btn-clear" title="Clear Logs">Clear</button>
@@ -513,4 +568,13 @@ export function subscribeDiagnostics(
   return FetchDoctorEngine.getInstance().subscribe(listener);
 }
 
+export function registerFetchScope(name?: string): string {
+  return FetchDoctorEngine.getInstance().registerScope(name);
+}
+
+export function unregisterFetchScope(scopeId: string, cleanlyAbortedSignals?: Set<AbortSignal>): void {
+  FetchDoctorEngine.getInstance().unregisterScope(scopeId, cleanlyAbortedSignals);
+}
+
+export * from '@fetch-doctor/shared';
 export { FetchDoctorEngine };
