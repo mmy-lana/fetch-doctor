@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" shape-rendering="geometricPrecision">
+  <defs>
+    <linearGradient id="icon-bg-sq" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+
+    <linearGradient id="icon-border-sq" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="50%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+
+    <linearGradient id="pulse-grad-sq" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#00F5A0"/>
+    </linearGradient>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="200" height="200" rx="44" fill="url(#icon-bg-sq)"/>
+  <rect x="1.5" y="1.5" width="197" height="197" rx="42" fill="none" stroke="url(#icon-border-sq)" stroke-width="2" opacity="0.8"/>
+
+  <circle cx="100" cy="100" r="70" fill="none" stroke="#334155" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>
+  <circle cx="100" cy="100" r="48" fill="none" stroke="#1E293B" stroke-width="1" opacity="0.6"/>
+
+  <path d="M 72 58 C 72 46, 83 42, 100 42 C 117 42, 128 46, 128 58 L 128 75 C 128 86, 113 94, 100 94 C 87 94, 72 86, 72 75 Z" 
+        fill="none" stroke="#38BDF8" stroke-width="4" stroke-linejoin="round" opacity="0.4"/>
+  <circle cx="72" cy="56" r="4.5" fill="#38BDF8"/>
+  <circle cx="128" cy="56" r="4.5" fill="#38BDF8"/>
+
+  <path d="M 100 94 L 100 112 C 100 132, 58 126, 58 148 C 58 167, 76 174, 95 174" 
+        fill="none" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="95" cy="174" r="10" fill="#0F172A" stroke="#38BDF8" stroke-width="3"/>
+  <circle cx="95" cy="174" r="4" fill="#34D399"/>
+
+  <g filter="url(#glow)">
+    <path d="M 42 108 L 68 108 L 75 121 L 86 66 L 100 150 L 109 94 L 118 115 L 127 108 L 158 108" 
+          fill="none" stroke="url(#pulse-grad-sq)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 149 97 L 164 108 L 149 119" 
+          fill="none" stroke="#00F5A0" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <circle cx="86" cy="66" r="3.5" fill="#38BDF8"/>
+  <circle cx="100" cy="150" r="3.5" fill="#F43F5E"/>
+  <circle cx="164" cy="108" r="3.5" fill="#00F5A0"/>
+
+  <g transform="translate(144, 42)">
+    <circle cx="14" cy="14" r="16" fill="#0F172A" stroke="#34D399" stroke-width="1.5"/>
+    <path d="M 14 7 L 14 21 M 7 14 L 21 14" stroke="#00F5A0" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+</svg>

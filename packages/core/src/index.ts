@@ -9,6 +9,8 @@ import {
   isUrlIgnored,
 } from '@fetch-doctor/shared';
 
+declare const process: { env?: { NODE_ENV?: string } } | undefined;
+
 type DiagnosticListener = (logs: NetworkRequestLog[], summary: DiagnosticSummary) => void;
 
 class FetchDoctorEngine {
@@ -44,8 +46,12 @@ class FetchDoctorEngine {
       return;
     }
 
+    const isDev =
+      typeof process !== 'undefined' &&
+      Boolean(process.env && process.env.NODE_ENV === 'development');
+
     this.config = {
-      enableOverlay: true,
+      enableOverlay: isDev,
       overlayPosition: 'bottom-right',
       maxLogs: 100,
       rules: {
