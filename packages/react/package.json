@@ -2,6 +2,12 @@
   "name": "@fetch-doctor/react",
   "version": "0.0.3",
   "description": "React 19 lifecycle hooks & diagnostic observers for fetch-doctor.",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src/index.ts",
+    "CHANGELOG.md"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -36,11 +42,15 @@
   },
   "dependencies": {
     "@fetch-doctor/shared": "workspace:*",
-    "@fetch-doctor/core": "workspace:*",
-    "react": "19.0.0-rc.1",
-    "react-dom": "19.0.0-rc.1"
+    "@fetch-doctor/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
+    "react": "19.0.0-rc.1",
+    "react-dom": "19.0.0-rc.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "tsup": "^8.5.1",

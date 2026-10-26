@@ -2,6 +2,14 @@
   "name": "@fetch-doctor/core",
   "version": "0.0.3",
   "description": "Core fetch interceptor engine & floating Shadow DOM diagnostic overlay for zombie fetches.",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "scripts",
+    "src/index.ts",
+    "src/logo.svg",
+    "CHANGELOG.md"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

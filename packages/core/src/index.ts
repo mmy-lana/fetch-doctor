@@ -13,13 +13,48 @@ declare const process: { env?: { NODE_ENV?: string } } | undefined;
 
 type DiagnosticListener = (logs: NetworkRequestLog[], summary: DiagnosticSummary) => void;
 
+const HTML_ESCAPES: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+
+function escapeHtml(value: unknown): string {
+  return String(value).replace(/[&<>"']/g, (ch) => HTML_ESCAPES[ch]);
+}
+
+function mergeConfig(base: FetchDoctorConfig, override: FetchDoctorConfig): FetchDoctorConfig {
+  const rules = base.rules || override.rules ? { ...base.rules, ...override.rules } : undefined;
+  return { ...base, ...override, rules };
+}
+
+// SEC-004: the overlay exposes request URLs in the DOM and must not appear in
+// production builds by accident. Explicit opt-in is required there.
+let productionOverlayOverride = false;
+
+function isProduction(): boolean {
+  return (
+    typeof process !== 'undefined' &&
+    Boolean(process.env && process.env.NODE_ENV === 'production')
+  );
+}
+
+function overlayBlocked(): boolean {
+  return isProduction() && !productionOverlayOverride;
+}
+
 class FetchDoctorEngine {
   private static instance: FetchDoctorEngine | null = null;
   private originalFetch: typeof window.fetch | null = null;
   private isInitialized = false;
   private config: FetchDoctorConfig = {};
   private requestLogs: NetworkRequestLog[] = [];
-  private activeRequests = new Map<string, { startTime: number; url: string; method: string }>();
+  private activeRequests = new Map<
+    string,
+    { startTime: number; url: string; method: string; signal?: AbortSignal }
+  >();
   private activeScopes = new Map<string, { id: string; name: string }>();
   private requestScopes = new Map<string, Set<string>>();
   private listeners: Set<DiagnosticListener> = new Set();
@@ -50,17 +85,26 @@ class FetchDoctorEngine {
       typeof process !== 'undefined' &&
       Boolean(process.env && process.env.NODE_ENV === 'development');
 
-    this.config = {
-      enableOverlay: isDev,
-      overlayPosition: 'bottom-right',
-      maxLogs: 100,
-      rules: {
-        zombieThresholdMs: 3000,
-        slowThresholdMs: 2000,
-        requireAbortSignal: true,
+    this.config = mergeConfig(
+      {
+        enableOverlay: isDev,
+        overlayPosition: 'bottom-right',
+        maxLogs: 100,
+        rules: {
+          zombieThresholdMs: 3000,
+          slowThresholdMs: 2000,
+          requireAbortSignal: true,
+        },
       },
-      ...config,
-    };
+      config
+    );
+
+    if (this.config.enableOverlay && overlayBlocked()) {
+      console.warn(
+        '[fetch-doctor]: Diagnostic overlay is disabled in production. Call allowProductionOverlay() only for controlled debugging sessions.'
+      );
+      this.config.enableOverlay = false;
+    }
 
     this.originalFetch = window.fetch;
     this.patchFetch();
@@ -72,7 +116,10 @@ class FetchDoctorEngine {
   }
 
   public updateConfig(newConfig: FetchDoctorConfig): void {
-    this.config = { ...this.config, ...newConfig };
+    this.config = mergeConfig(this.config, newConfig);
+    if (this.config.enableOverlay && overlayBlocked()) {
+      this.config.enableOverlay = false;
+    }
     if (this.config.enableOverlay && !this.overlayElement && typeof window !== 'undefined') {
       this.mountOverlay();
     } else if (!this.config.enableOverlay && this.overlayElement) {
@@ -94,7 +141,15 @@ class FetchDoctorEngine {
       const scopes = this.requestScopes.get(reqId);
       if (scopes && scopes.has(scopeId)) {
         const log = this.requestLogs.find((l) => l.id === reqId);
-        const isCleanlyAborted = cleanlyAbortedSignals && Array.from(cleanlyAbortedSignals).some((s) => s.aborted);
+        // Per-request abort evaluation: a request is only "cleanly aborted" if
+        // its OWN signal was aborted as part of the teardown. One aborted
+        // request must not mask zombie detection for unrelated in-flight
+        // requests registered under the same scope.
+        const isCleanlyAborted =
+          Boolean(reqInfo.signal?.aborted) ||
+          (cleanlyAbortedSignals
+            ? Array.from(cleanlyAbortedSignals).some((s) => s === reqInfo.signal && s.aborted)
+            : false);
 
         if (!isCleanlyAborted) {
           const issue: FetchDiagnosticIssue = {
@@ -206,10 +261,12 @@ class FetchDoctorEngine {
 
       const id = generateRequestId();
       const startTime = performance.now();
-      const signalAttached = Boolean(init?.signal);
+      const effectiveSignal: AbortSignal | undefined =
+        init?.signal ?? (typeof input === 'object' && input !== null && 'signal' in input ? input.signal : undefined);
+      const signalAttached = Boolean(effectiveSignal);
       const issues: FetchDiagnosticIssue[] = [];
 
-      self.activeRequests.set(id, { startTime, url, method });
+      self.activeRequests.set(id, { startTime, url, method, signal: effectiveSignal });
       self.requestScopes.set(id, new Set(self.activeScopes.keys()));
 
       if (!signalAttached && self.config.rules?.requireAbortSignal) {
@@ -487,7 +544,7 @@ class FetchDoctorEngine {
       <div class="container">
         <div class="header" id="toggle-header">
           <div style="display:flex;align-items:center;gap:6px;">
-            <svg width="16" height="16" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="200" height="200" rx="44" fill="#0F172A"/>
               <path d="M 42 108 L 68 108 L 75 121 L 86 66 L 100 150 L 109 94 L 118 115 L 127 108 L 158 108" stroke="#38BDF8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
               <circle cx="100" cy="150" r="10" fill="#F43F5E"/>
@@ -517,13 +574,13 @@ class FetchDoctorEngine {
                   .map(
                     (l) => `
             <div class="log-item">
-              <div><span class="method">${l.method}</span> ${l.url.substring(0, 35)}...</div>
+              <div><span class="method">${escapeHtml(l.method)}</span> ${escapeHtml(l.url.substring(0, 35))}...</div>
               <div style="color: #8b949e; display: flex; justify-content: space-between; margin-top: 2px;">
                 <span>${l.duration ? formatDuration(l.duration) : 'pending'}</span>
                 <span>${l.bytesReceived ? formatBytes(l.bytesReceived) : ''}</span>
                 <span style="color: ${l.status && l.status < 400 ? '#3fb950' : '#f85149'}">${l.status || 'ERR'}</span>
               </div>
-              ${l.issues.map((i: FetchDiagnosticIssue) => `<div style="color: #f85149; font-size: 10px; margin-top:2px;">[!] ${i.message}</div>`).join('')}
+              ${l.issues.map((i: FetchDiagnosticIssue) => `<div style="color: #f85149; font-size: 10px; margin-top:2px;">[!] ${escapeHtml(i.message)}</div>`).join('')}
             </div>
           `
                   )
@@ -578,6 +635,14 @@ export function subscribeDiagnostics(
   listener: (logs: NetworkRequestLog[], summary: DiagnosticSummary) => void
 ): () => void {
   return FetchDoctorEngine.getInstance().subscribe(listener);
+}
+
+/**
+ * Explicitly allow the diagnostic overlay in production builds. This exposes
+ * request URLs in the DOM; call it only for controlled debugging sessions.
+ */
+export function allowProductionOverlay(): void {
+  productionOverlayOverride = true;
 }
 
 export function registerFetchScope(name?: string): string {

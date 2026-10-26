@@ -123,6 +123,11 @@ export function isUrlIgnored(url: string, ignoreList?: (string | RegExp)[]): boo
     if (typeof pattern === 'string') {
       return url.includes(pattern);
     }
-    return pattern.test(url);
+    // Tolerate malformed entries (e.g. patterns corrupted by a JSON
+    // round-trip) instead of throwing inside the fetch patch.
+    if (pattern && typeof (pattern as { test?: unknown }).test === 'function') {
+      return (pattern as RegExp).test(url);
+    }
+    return false;
   });
 }

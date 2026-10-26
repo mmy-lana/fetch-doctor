@@ -13,14 +13,28 @@ import {
 import { registerFetchScope, unregisterFetchScope } from '@fetch-doctor/core';
 
 export function useFetchDoctor(config?: FetchDoctorConfig): void {
-  const serializedConfig = config ? JSON.stringify(config) : '';
-  
+  // Keep the caller's config object intact (functions, RegExp, objects).
+  // Serializing through JSON here used to drop `onIssueDetected` and turn
+  // RegExp ignore patterns into plain objects, which made every fetch throw
+  // `pattern.test is not a function`.
+  const configRef = useRef<FetchDoctorConfig | undefined>(config);
+  configRef.current = config;
+
+  // Re-apply only when the config *values* change. Function and RegExp
+  // identities are excluded so inline callbacks do not re-init every render.
+  const valueKey = config
+    ? JSON.stringify([
+        config.enableOverlay ?? null,
+        config.overlayPosition ?? null,
+        config.maxLogs ?? null,
+        config.rules ?? null,
+        (config.ignoreUrls ?? []).map((p) => (typeof p === 'string' ? p : String(p))),
+      ])
+    : '';
+
   useEffect(() => {
-    const parsedConfig: FetchDoctorConfig | undefined = serializedConfig
-      ? JSON.parse(serializedConfig)
-      : undefined;
-    initFetchDoctor(parsedConfig);
-  }, [serializedConfig]);
+    initFetchDoctor(configRef.current);
+  }, [valueKey]);
 }
 
 export function useFetchDoctorDiagnostics(): {

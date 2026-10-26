@@ -1,6 +1,13 @@
 {
   "name": "@fetch-doctor/shared",
   "version": "0.0.3",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src/index.ts",
+    "src/logo.svg",
+    "CHANGELOG.md"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
