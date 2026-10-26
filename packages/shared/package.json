@@ -1,6 +1,22 @@
 {
   "name": "@fetch-doctor/shared",
   "version": "0.0.4",
+  "description": "Shared types, formatters, and utilities for fetch-doctor.",
+  "homepage": "https://fetch-doctor.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmy-lana/fetch-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mmy-lana/fetch-doctor/issues"
+  },
+  "keywords": [
+    "fetch-doctor",
+    "shared-types",
+    "typescript",
+    "zombie-fetch",
+    "abortsignal"
+  ],
   "license": "MIT",
   "files": [
     "dist",
