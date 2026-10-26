@@ -19,13 +19,13 @@ function ChildFetchComponent() {
       <div className="flex gap-2">
         <button
           onClick={triggerLeakingFetch}
-          className="px-3 py-1.5 bg-red-600/80 hover:bg-red-500 text-white rounded text-xs font-medium"
+          className="px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white rounded text-xs font-medium"
         >
           Trigger Un-tracked 5s Request
         </button>
         <button
           onClick={triggerTrackedFetch}
-          className="px-3 py-1.5 bg-green-600/80 hover:bg-green-500 text-white rounded text-xs font-medium"
+          className="px-3 py-1.5 bg-green-700 hover:bg-green-800 text-white rounded text-xs font-medium"
         >
           Trigger Auto-Aborting 2s Request
         </button>
@@ -48,10 +48,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8 font-sans">
+    <main className="min-h-screen bg-slate-950 text-slate-100 p-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-6">
         <header className="flex items-center gap-3">
-          <svg className="w-10 h-10 shrink-0" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg aria-hidden="true" focusable="false" className="w-10 h-10 shrink-0" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="200" height="200" rx="44" fill="#0F172A" stroke="#00F2FE" strokeWidth="2"/>
             <path d="M 42 108 L 68 108 L 75 121 L 86 66 L 100 150 L 109 94 L 118 115 L 127 108 L 158 108" stroke="#38BDF8" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M 149 97 L 164 108 L 149 119" stroke="#00F5A0" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
@@ -71,19 +71,19 @@ export default function App() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={triggerSlowFetch}
-                className="px-4 py-2 bg-yellow-600/80 hover:bg-yellow-500 text-white rounded text-xs font-medium text-left"
+                className="px-4 py-2 bg-yellow-700 hover:bg-yellow-800 text-white rounded text-xs font-medium text-left"
               >
                 Simulate Slow Fetch (3s delay)
               </button>
               <button
                 onClick={triggerErrorFetch}
-                className="px-4 py-2 bg-red-600/80 hover:bg-red-500 text-white rounded text-xs font-medium text-left"
+                className="px-4 py-2 bg-red-700 hover:bg-red-800 text-white rounded text-xs font-medium text-left"
               >
                 Simulate HTTP 500 Error
               </button>
               <button
                 onClick={() => setShowChild(!showChild)}
-                className="px-4 py-2 bg-cyan-700 hover:bg-cyan-600 text-white rounded text-xs font-medium text-left"
+                className="px-4 py-2 bg-cyan-700 hover:bg-cyan-800 text-white rounded text-xs font-medium text-left"
               >
                 {showChild ? 'Unmount Child Component (Test Zombie)' : 'Remount Child Component'}
               </button>
@@ -111,7 +111,7 @@ export default function App() {
           <h2 className="text-sm font-semibold text-slate-300">Live Request Log Stream</h2>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {logs.length === 0 ? (
-              <div className="text-xs text-slate-500">No network requests tracked yet.</div>
+              <div className="text-xs text-slate-400">No network requests tracked yet.</div>
             ) : (
               logs.map((log) => (
                 <div key={log.id} className="p-3 bg-slate-950 border border-slate-800 rounded text-xs flex justify-between">
@@ -127,6 +127,6 @@ export default function App() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

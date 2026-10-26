@@ -6,9 +6,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@fetch-doctor/react': path.resolve(__dirname, '../../packages/react/src/index.ts'),
-      '@fetch-doctor/core': path.resolve(__dirname, '../../packages/core/src/index.ts'),
-      '@fetch-doctor/shared': path.resolve(__dirname, '../../packages/shared/src/index.ts'),
+      '@fetch-doctor/react': path.resolve(import.meta.dirname, '../../packages/react/src/index.ts'),
+      '@fetch-doctor/core': path.resolve(import.meta.dirname, '../../packages/core/src/index.ts'),
+      '@fetch-doctor/shared': path.resolve(import.meta.dirname, '../../packages/shared/src/index.ts'),
     },
   },
 });

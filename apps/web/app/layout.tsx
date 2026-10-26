@@ -22,6 +22,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '32x32' },
+    ],
+  },
   authors: [{ name: 'Muhammad Maulana Yusuf', url: 'https://github.com/mmy-lana' }],
   verification: {
     google: 'kHFv2qyOjv4Th7trKaPXsJom5ZKq5zYf_pZpdXYvA58',
@@ -32,11 +38,20 @@ export const metadata: Metadata = {
     url: 'https://fetch-doctor.vercel.app',
     siteName: 'fetch-doctor',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'fetch-doctor — HTTP request profiler and zombie fetch detector',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'fetch-doctor — HTTP Profiler & Zombie Fetch Detector',
     description: 'Zero-dependency runtime network diagnostics and AbortSignal inspector for modern web apps.',
+    images: ['/og-image.png'],
   },
 };
 
@@ -65,7 +80,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <meta name="google-site-verification" content="kHFv2qyOjv4Th7trKaPXsJom5ZKq5zYf_pZpdXYvA58" />
+        {/* google-site-verification is rendered once via `metadata.verification`
+            above — do not add a manual tag here (it produced a duplicate). */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
