@@ -10,13 +10,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Actions are SHA-pinned (SEC-009); version comments track the upstream tags.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
+      # No `version:` override — the exact pnpm release comes from the
+      # `packageManager` field (pnpm@9.15.0) in the root package.json.
+      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: 'pnpm'
@@ -26,3 +27,9 @@ jobs:
 
       - name: Build monorepo packages and apps
         run: pnpm build
+
+      - name: Run unit tests
+        run: node --test "packages/*/src/__tests__/*.test.mjs"
+
+      - name: Audit production dependencies
+        run: pnpm audit --prod --audit-level high
