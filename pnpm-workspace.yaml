@@ -1,5 +1,9 @@
 packages:
   - 'apps/*'
   - 'packages/*'
-allowBuilds:
-  esbuild: true
+# Dependency build scripts are limited to what the toolchain needs. This is the
+# key pnpm actually reads (verified against the pinned pnpm 9.15.0); the former
+# `allowBuilds` map was ignored entirely. pnpm 9 runs allowlisted scripts, and
+# pnpm 10+ blocks scripts by default and honors this same allowlist.
+onlyBuiltDependencies:
+  - esbuild
