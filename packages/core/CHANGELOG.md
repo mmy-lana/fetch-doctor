@@ -1,5 +1,13 @@
 # @fetch-doctor/core
 
+## 0.0.4
+
+### Patch Changes
+
+- 51185c3: Security hardening, multi-element interaction scanning, and UI refinement).
+- Updated dependencies [51185c3]
+  - @fetch-doctor/shared@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes

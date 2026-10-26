@@ -1,5 +1,11 @@
 # @fetch-doctor/shared
 
+## 0.0.4
+
+### Patch Changes
+
+- 51185c3: Security hardening, multi-element interaction scanning, and UI refinement).
+
 ## 0.0.3
 
 ### Patch Changes
